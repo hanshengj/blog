@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>找回密码</title>
+    <link rel="stylesheet" type="text/css" href="NewLogin.css" />
+
+    <script src="jquery-1.9.1.min.js"></script>
+    <script>
+        function findkey(type) {
+            var key=jQuery("#idnumber");
+            if(type==2){
+                if(confirm("确认清空吗")){
+                    key.val("");
+                    key.focus();
+                    return false;
+                }
+            }
+            if(type==1) {
+                if (key.val().trim() == "") {
+                    alert("请输入虚拟ID号");
+                    key.focus();
+                    return false;
+                }
+                //提交给后端
+                jQuery.getJSON("forgetkey", {"idnumber": key.val()}, function (data) {
+                    if (data != null && data.state == 200) {
+                        alert("id正确");
+                        location.href="confirmkey.html";
+                    } else {
+                        alert("身份验证无法通过，请重新输入");
+                    }
+                });
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div id="login_box">
+    <div id="login_box2">
+        <span >找回密码</span>
+    </div>
+    <br>
+    <br>
+    <div>
+    身份证号：<input type="text" id="idnumber" name="idnumber" placeholder="请输入你的虚拟身份证号">
+    </div>
+    <p></p>
+    <br>
+    <div id="button1">
+        <div >
+            &nbsp;&nbsp;&nbsp;<input type="button" value="提 交"  onclick="findkey(1)">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            &nbsp;&nbsp;&nbsp;<input type="button" value=" 清 空 " onclick="findkey(2)">
+        </div>
+    </div>
+</div>
+</body>
+</html>

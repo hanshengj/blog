@@ -1,0 +1,161 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>注册页面</title>
+    <link rel="stylesheet" type="text/css" href="NewLogin.css" />
+
+    <script src="jquery-1.9.1.min.js"></script>
+    <script>
+        function myck(type){
+            var input_username = jQuery("#username");
+            var input_pwd = jQuery("#pwd");
+            var input_pwd2 = jQuery("#pwd2");
+            var id = jQuery("#idcard");
+            //var a = document.getElementById("#username");
+            // var input_username2 = document.getElementById("username");
+            if(type==2){
+                if(confirm("是否清空数据？")){
+                    // 清空
+                    input_username.val("");  // input_username2.value="";
+                    input_pwd.val("");
+                    input_pwd2.val("");
+                    id.val("");
+                }
+            }
+            if(type==1){
+                // 提交，非空效验
+                if(input_username.val().trim()==""){
+                    alert("请先输入用户名！");
+                    // 设置光标到当前输入框
+                    input_username.focus();
+                    // 终止代码执行
+                    return false;
+                }
+                if(input_username.val().length<3){
+                    alert("用户名过短");
+                    // 设置光标到当前输入框
+                    input_username.focus();
+                    // 终止代码执行
+                    return false;
+                }
+                if(input_username.val().length>10 ){
+                    alert("用户名过长");
+                    // 设置光标到当前输入框
+                    input_username.focus();
+                    // 终止代码执行
+                    return false;
+                }
+
+
+                if(id.val().trim()==""){
+                    alert("请先输入虚拟ID！");
+                    // 设置光标到当前输入框
+                    id.focus();
+                    // 终止代码执行
+                    return false;
+                }
+
+
+                if(input_pwd.val().trim()==""){
+                    alert("请先输入密码！");
+                    // 设置光标到当前输入框
+                    input_pwd.focus();
+                    // 终止代码执行
+                    return false;
+                }
+                //var name1 = document.getElementById("pwd");
+                if(input_pwd.val().length<6 ){
+                    alert("密码过短");
+                    // 设置光标到当前输入框
+                    input_pwd.focus();
+                    // 终止代码执行
+                    return false;
+                }
+                if(input_pwd.val().length>20 ){
+                    alert("密码过长");
+                    // 设置光标到当前输入框
+                    input_pwd.focus();
+                    // 终止代码执行
+                    return false;
+                }
+
+
+
+
+                if(input_pwd2.val().trim()==""){
+                    alert("请先确认密码！");
+                    // 设置光标到当前输入框
+                    input_pwd2.focus();
+                    // 终止代码执行
+                    return false;
+                }
+                if(input_pwd2.val()!=input_pwd.val()){
+                    alert("两次输入的密码不一致，请重新输入并确认")
+                    input_pwd.focus();
+                    return false;
+                }
+                //alert("恭喜：注册成功");
+                // 提交信息给后端
+                jQuery.getJSON("reg",{
+                    "username":input_username.val(),
+                    "idcard":id.val(),
+                    "password":input_pwd.val()
+                },function (data) {
+                    if(data!=null && data.state==200){
+                        // 说明请求成功
+                        alert("恭喜：注册成功");
+                        location.href="logins.html";
+                    }else{
+                        alert("抱歉：注册失败" + data.msg);
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div id="login_box">
+    <div id="login_box2">
+        <span >注册</span>
+    </div>
+    <br>
+
+    <div>
+        <div >
+            用&nbsp;&nbsp;户&nbsp;&nbsp;名：<input type="text" name="username" placeholder="请输入3-10位用户名" id="username">
+        </div>
+    </div>
+    <br>
+
+    <div>
+        <div >
+            虚&nbsp;&nbsp;拟&nbsp;&nbsp;ID：<input type="text" name="idcard" placeholder="请输入ID" id="idcard">
+        </div>
+    </div>
+    <br>
+    <div>
+        <div >
+            密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：<input name="password" type="password" placeholder="请输入6-20位密码" id="pwd">
+        </div>
+    </div>
+    <br>
+    <div>
+        <div >
+            确认密码：<input type="password" name="password" placeholder="请确认密码" id="pwd2">
+        </div>
+    </div>
+    <br>
+
+    <div id="button1">
+        <div >
+            <input type="button" value="提 交"  onclick="myck(1)">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <input type="button" value="清 空"  onclick="myck(2)">
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
